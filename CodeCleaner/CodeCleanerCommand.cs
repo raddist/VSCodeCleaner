@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using EnvDTE;
+using System.Windows.Forms;
 
 namespace CodeCleaner
 {
@@ -101,16 +102,24 @@ namespace CodeCleaner
     /// <param name="e">Event args.</param>
     private void MenuItemCallback(object sender, EventArgs e)
     {
+      string scriptName = "RefactorFiles.py";
+
+      // find script path
+      string folderPath = "";
+      FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+      if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+      {
+        folderPath = folderBrowserDialog1.SelectedPath;
+      }
+
+      // find document path
       string activeDocumentPath = GetActiveDocumentFilePath(ServiceProvider);
 
       Microsoft.Scripting.Hosting.ScriptEngine pythonEngine = IronPython.Hosting.Python.CreateEngine();
       Microsoft.Scripting.Hosting.ScriptScope scope = pythonEngine.CreateScope();
-
-      pythonEngine.ExecuteFile("C:\\Users\\belyakov\\Documents\\Visual Studio 2015\\Projects\\RefactorFiles\\RefactorFiles\\RefactorFiles.py", scope);
+      pythonEngine.ExecuteFile(folderPath + "\\" + scriptName, scope);
 
       dynamic refactor = scope.GetVariable("Removets");
-
-      //refactor("C:\\Users\\belyakov\\Documents\\Visual Studio 2015\\Projects\\RefactorFiles\\RefactorFiles\\text1.cpp");
       refactor(activeDocumentPath);
     }
   }

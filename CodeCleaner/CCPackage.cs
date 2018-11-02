@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 
-namespace CodeCleaner
+namespace CodeCleanerSpace
 {
   /// <summary>
   /// This is the class that implements the package exposed by this assembly.
@@ -68,6 +68,7 @@ namespace CodeCleaner
     {
             base.Initialize();
         CodeCleanerCommand.Initialize(this);
+        ChangeDirectoryCmd.Initialize(this);
     }
 
     #endregion

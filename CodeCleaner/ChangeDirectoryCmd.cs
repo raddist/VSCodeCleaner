@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------------------------
-// <copyright file="CodeCleanerCommand.cs" company="Company">
+// <copyright file="ChangeDirectoryCmd.cs" company="Company">
 //     Copyright (c) Company.  All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------------
@@ -9,21 +9,19 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-
-using EnvDTE;
-using System.Windows.Forms;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace CodeCleanerSpace
 {
   /// <summary>
   /// Command handler
   /// </summary>
-  internal sealed class CodeCleanerCommand
+  internal sealed class ChangeDirectoryCmd
   {
     /// <summary>
     /// Command ID.
     /// </summary>
-    public const int CommandId = 0x0100;
+    public const int CommandId = 0x0256;
 
     /// <summary>
     /// Command menu group (command set GUID).
@@ -36,11 +34,11 @@ namespace CodeCleanerSpace
     private readonly Package package;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CodeCleanerCommand"/> class.
+    /// Initializes a new instance of the <see cref="ChangeDirectoryCmd"/> class.
     /// Adds our command handlers for menu (commands must exist in the command table file)
     /// </summary>
     /// <param name="package">Owner package, not null.</param>
-    private CodeCleanerCommand(Package package)
+    private ChangeDirectoryCmd(Package package)
     {
       if (package == null)
       {
@@ -61,7 +59,7 @@ namespace CodeCleanerSpace
     /// <summary>
     /// Gets the instance of the command.
     /// </summary>
-    public static CodeCleanerCommand Instance
+    public static ChangeDirectoryCmd Instance
     {
       get;
       private set;
@@ -84,13 +82,7 @@ namespace CodeCleanerSpace
     /// <param name="package">Owner package, not null.</param>
     public static void Initialize(Package package)
     {
-      Instance = new CodeCleanerCommand(package);
-    }
-
-    private string GetActiveDocumentFilePath(IServiceProvider serviceProvider)
-    {
-      EnvDTE80.DTE2 applicationObject = serviceProvider.GetService(typeof(DTE)) as EnvDTE80.DTE2;
-      return applicationObject.ActiveDocument.FullName;
+      Instance = new ChangeDirectoryCmd(package);
     }
 
     /// <summary>
@@ -102,26 +94,8 @@ namespace CodeCleanerSpace
     /// <param name="e">Event args.</param>
     private void MenuItemCallback(object sender, EventArgs e)
     {
-      string scriptName = "RefactorFiles.py";
-
-      // find script path
-      string folderPath = CodeCleaner.Default.ScriptDirectory;
-      //folderPath = "C:\\Users\\belyakov\\Documents\\Visual Studio 2015\\Projects\\RefactorFiles\\RefactorFiles";
-
-      // find document path
-      string activeDocumentPath = GetActiveDocumentFilePath(ServiceProvider);
-
-      Microsoft.Scripting.Hosting.ScriptEngine pythonEngine = IronPython.Hosting.Python.CreateEngine();
-      Microsoft.Scripting.Hosting.ScriptScope scope = pythonEngine.CreateScope();
-      pythonEngine.ExecuteFile(folderPath + "\\" + scriptName, scope);
-
-      dynamic refactor = scope.GetVariable("Removets");
-      refactor(activeDocumentPath);
-
-      // TODO uncomment for kdiff execution
-      //string strCmdText;
-      //strCmdText = "\"" + activeDocumentPath + "\" \"" + activeDocumentPath + "\"";
-      //System.Diagnostics.Process.Start("C:\\Program Files\\KDiff3\\kdiff3.exe", strCmdText);
+      var documentationControl = new ChangeDirectoryWindow();
+      documentationControl.ShowModal();
     }
   }
 }

@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ActivePathHolder.cs" />
     <Compile Include="BaseDialogWindow.cs" />
     <Compile Include="CCPackage.cs" />
     <Compile Include="ChangeDirectoryCmd.cs" />
@@ -63,6 +64,9 @@
       <DependentUpon>CodeCleaner.settings</DependentUpon>
     </Compile>
     <Compile Include="CodeCleanerCommand.cs" />
+    <Compile Include="OpenDiffToolAndSaveWnd.xaml.cs">
+      <DependentUpon>OpenDiffToolAndSaveWnd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +235,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ChangeDirectoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OpenDiffToolAndSaveWnd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

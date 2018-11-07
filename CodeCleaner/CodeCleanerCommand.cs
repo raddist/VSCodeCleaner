@@ -102,6 +102,7 @@ namespace CodeCleanerSpace
     /// <param name="e">Event args.</param>
     private void MenuItemCallback(object sender, EventArgs e)
     {
+      string mgrName = "ScriptsMgr.py";
       string scriptName = "RefactorFiles.py";
 
       // find script path
@@ -112,16 +113,25 @@ namespace CodeCleanerSpace
       string activeDocumentPath = GetActiveDocumentFilePath(ServiceProvider);
 
       Microsoft.Scripting.Hosting.ScriptEngine pythonEngine = IronPython.Hosting.Python.CreateEngine();
+
       Microsoft.Scripting.Hosting.ScriptScope scope = pythonEngine.CreateScope();
       pythonEngine.ExecuteFile(folderPath + "\\" + scriptName, scope);
 
-      dynamic refactor = scope.GetVariable("Removets");
-      refactor(activeDocumentPath);
+      Microsoft.Scripting.Hosting.ScriptScope scope2 = pythonEngine.CreateScope();
+      pythonEngine.ExecuteFile(folderPath + "\\" + mgrName, scope2);
 
-      // TODO uncomment for kdiff execution
-      //string strCmdText;
-      //strCmdText = "\"" + activeDocumentPath + "\" \"" + activeDocumentPath + "\"";
-      //System.Diagnostics.Process.Start("C:\\Program Files\\KDiff3\\kdiff3.exe", strCmdText);
+      dynamic refactor2 = scope2.GetVariable("CheckWithScript");
+      bool isTrue = refactor2(activeDocumentPath, "RefactorFiles");
+
+      dynamic refactor = scope.GetVariable("Removets");
+      refactor(activeDocumentPath, activeDocumentPath + "_tmp");
+
+      // show dialog
+      ActivePathHolder theHolder = ActivePathHolder.getInstance();
+      theHolder.activeFilePath = activeDocumentPath;
+
+      var documentationControl = new OpenDiffToolAndSaveWnd();
+      documentationControl.ShowModal();
     }
   }
 }

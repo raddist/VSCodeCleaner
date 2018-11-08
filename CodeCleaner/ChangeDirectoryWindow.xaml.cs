@@ -26,7 +26,7 @@ namespace CodeCleanerSpace
     {
       InitializeComponent();
 
-     this.PathTextBox.Text = CodeCleaner.Default.ScriptDirectory;
+      this.PathTextBox.Text = CodeCleaner.Default.ScriptDirectory;
     }
 
     private String directoryText;

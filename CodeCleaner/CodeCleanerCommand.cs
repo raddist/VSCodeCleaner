@@ -102,28 +102,13 @@ namespace CodeCleanerSpace
     /// <param name="e">Event args.</param>
     private void MenuItemCallback(object sender, EventArgs e)
     {
-      // find script path
-      string folderPath = "C:\\Users\\belyakov\\Documents\\Visual Studio 2015\\Projects\\RefactorFiles\\RefactorFiles";
-      //string folderPath = CodeCleaner.Default.ScriptDirectory;
-      // find document path
       string activeDocumentPath = GetActiveDocumentFilePath(ServiceProvider);
-
-      //string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "');"
-      //  + "import RefactorFiles as rf; "
-      //  + "rf.Removets(r'" + activeDocumentPath + "', r'" + activeDocumentPath + "_tmp');\" ";
-
-      string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "');"
-        + "import ScriptsMgr as smgr; "
-        + "smgr.fix_with_script(r'" + activeDocumentPath + "', r'" + activeDocumentPath + "_tmp', 'RefactorFiles');\" ";
-
-      System.Diagnostics.Process.Start("py", strCmdText);
-
 
       // show dialog
       ActivePathHolder theHolder = ActivePathHolder.getInstance();
       theHolder.activeFilePath = activeDocumentPath;
 
-      var documentationControl = new OpenDiffToolAndSaveWnd();
+      var documentationControl = new InspectCodeWnd();
       documentationControl.ShowModal();
     }
   }

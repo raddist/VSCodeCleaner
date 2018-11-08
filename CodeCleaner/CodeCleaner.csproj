@@ -64,6 +64,9 @@
       <DependentUpon>CodeCleaner.settings</DependentUpon>
     </Compile>
     <Compile Include="CodeCleanerCommand.cs" />
+    <Compile Include="InspectCodeWnd.xaml.cs">
+      <DependentUpon>InspectCodeWnd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OpenDiffToolAndSaveWnd.xaml.cs">
       <DependentUpon>OpenDiffToolAndSaveWnd.xaml</DependentUpon>
     </Compile>
@@ -235,6 +238,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ChangeDirectoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InspectCodeWnd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

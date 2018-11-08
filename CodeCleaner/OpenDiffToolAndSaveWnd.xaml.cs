@@ -70,17 +70,16 @@ namespace CodeCleanerSpace
       string activeDocumentPath = theHolder.activeFilePath;
       string tmpDocumentPath = theHolder.tmpFilePath;
 
-      string scriptName = "RefactorFiles.py";
+      string path = new FileInfo(activeDocumentPath).Directory.FullName;
+      string name = System.IO.Path.GetFileName(activeDocumentPath);
 
-      // find script path
-      string folderPath = CodeCleaner.Default.ScriptDirectory;
+      // Use Path class to manipulate file and directory paths.
+      string destFile = System.IO.Path.Combine(path, name);
+      string sourceFile = System.IO.Path.Combine(path, name + "_tmp");
 
-      Microsoft.Scripting.Hosting.ScriptEngine pythonEngine = IronPython.Hosting.Python.CreateEngine();
-      Microsoft.Scripting.Hosting.ScriptScope scope = pythonEngine.CreateScope();
-      pythonEngine.ExecuteFile(folderPath + "\\" + scriptName, scope);
-
-      dynamic rewriter = scope.GetVariable("RewriteFromTo");
-      rewriter(tmpDocumentPath, activeDocumentPath);
+      // To copy a file to another location and 
+      // overwrite the destination file if it already exists.
+      System.IO.File.Copy(sourceFile, destFile, true);
     }
   }
 }

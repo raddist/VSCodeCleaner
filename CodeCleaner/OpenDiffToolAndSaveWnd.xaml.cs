@@ -49,7 +49,7 @@ namespace CodeCleanerSpace
       string activeDocumentPath = theHolder.activeFilePath;
 
       string strCmdText;
-      strCmdText = "\"" + activeDocumentPath + "\" \"" + activeDocumentPath + "\" \"" + activeDocumentPath + "_tmp\" -o \"temp.cpp\"";
+      strCmdText = "\"" + activeDocumentPath + "\" \"" + activeDocumentPath + "\" \"" + activeDocumentPath + "_tmp\"";// -o \"temp.cpp\"";
       System.Diagnostics.Process.Start("C:\\Program Files\\KDiff3\\kdiff3.exe", strCmdText);
     }
 

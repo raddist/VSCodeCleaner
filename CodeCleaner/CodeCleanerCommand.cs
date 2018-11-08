@@ -102,29 +102,24 @@ namespace CodeCleanerSpace
     /// <param name="e">Event args.</param>
     private void MenuItemCallback(object sender, EventArgs e)
     {
-      string mgrName = "ScriptsMgr.py";
-      string scriptName = "RefactorFiles.py";
-
       // find script path
-      string folderPath = CodeCleaner.Default.ScriptDirectory;
-      //folderPath = "C:\\Users\\belyakov\\Documents\\Visual Studio 2015\\Projects\\RefactorFiles\\RefactorFiles";
-
+      string folderPath = "C:\\Users\\belyakov\\Documents\\Visual Studio 2015\\Projects\\RefactorFiles\\RefactorFiles";
+      //string folderPath = CodeCleaner.Default.ScriptDirectory;
       // find document path
       string activeDocumentPath = GetActiveDocumentFilePath(ServiceProvider);
 
-      Microsoft.Scripting.Hosting.ScriptEngine pythonEngine = IronPython.Hosting.Python.CreateEngine();
+      //string funcParams = @"\""" + activeDocumentPath + @"\"", \""" + activeDocumentPath + @"_tmp\""";
 
-      Microsoft.Scripting.Hosting.ScriptScope scope = pythonEngine.CreateScope();
-      pythonEngine.ExecuteFile(folderPath + "\\" + scriptName, scope);
+      //string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "'); import RefactorFiles as rf; rf.Removets(" + funcParams + @"); """;
+      //System.Diagnostics.Process.Start("py", strCmdText);
 
-      Microsoft.Scripting.Hosting.ScriptScope scope2 = pythonEngine.CreateScope();
-      pythonEngine.ExecuteFile(folderPath + "\\" + mgrName, scope2);
+      string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "'); import RefactorFiles as rf; rf.Test(r'" + activeDocumentPath + "_tmp');\" ";
+      string strTrueText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "');"
+        + "import RefactorFiles as rf; "
+        + "rf.Removets(r'" + activeDocumentPath + "', r'" + activeDocumentPath + "_tmp');\" ";
 
-      dynamic refactor2 = scope2.GetVariable("CheckWithScript");
-      bool isTrue = refactor2(activeDocumentPath, "RefactorFiles");
+      System.Diagnostics.Process.Start("py", strTrueText);
 
-      dynamic refactor = scope.GetVariable("Removets");
-      refactor(activeDocumentPath, activeDocumentPath + "_tmp");
 
       // show dialog
       ActivePathHolder theHolder = ActivePathHolder.getInstance();

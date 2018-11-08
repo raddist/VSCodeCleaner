@@ -108,17 +108,15 @@ namespace CodeCleanerSpace
       // find document path
       string activeDocumentPath = GetActiveDocumentFilePath(ServiceProvider);
 
-      //string funcParams = @"\""" + activeDocumentPath + @"\"", \""" + activeDocumentPath + @"_tmp\""";
+      //string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "');"
+      //  + "import RefactorFiles as rf; "
+      //  + "rf.Removets(r'" + activeDocumentPath + "', r'" + activeDocumentPath + "_tmp');\" ";
 
-      //string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "'); import RefactorFiles as rf; rf.Removets(" + funcParams + @"); """;
-      //System.Diagnostics.Process.Start("py", strCmdText);
+      string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "');"
+        + "import ScriptsMgr as smgr; "
+        + "smgr.fix_with_script(r'" + activeDocumentPath + "', r'" + activeDocumentPath + "_tmp', 'RefactorFiles');\" ";
 
-      string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "'); import RefactorFiles as rf; rf.Test(r'" + activeDocumentPath + "_tmp');\" ";
-      string strTrueText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "');"
-        + "import RefactorFiles as rf; "
-        + "rf.Removets(r'" + activeDocumentPath + "', r'" + activeDocumentPath + "_tmp');\" ";
-
-      System.Diagnostics.Process.Start("py", strTrueText);
+      System.Diagnostics.Process.Start("py", strCmdText);
 
 
       // show dialog

@@ -30,9 +30,23 @@ namespace CodeCleanerSpace {
             get {
                 return ((string)(this["ScriptDirectory"]));
             }
-            set {
-                this["ScriptDirectory"] = value;
+            set
+            {
+              this["ScriptDirectory"] = value;
             }
-        }
+    }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DiffToolDirectory {
+            get {
+                return ((string)(this["DiffToolDirectory"]));
+            }
+            set
+            {
+              this["DiffToolDirectory"] = value;
+            }
+    }
     }
 }

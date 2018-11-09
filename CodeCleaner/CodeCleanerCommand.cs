@@ -90,7 +90,7 @@ namespace CodeCleanerSpace
     private string GetActiveDocumentFilePath(IServiceProvider serviceProvider)
     {
       EnvDTE80.DTE2 applicationObject = serviceProvider.GetService(typeof(DTE)) as EnvDTE80.DTE2;
-      return applicationObject.ActiveDocument.FullName;
+      return applicationObject.ActiveDocument != null ? applicationObject.ActiveDocument.FullName : "";
     }
 
     /// <summary>
@@ -104,10 +104,10 @@ namespace CodeCleanerSpace
     {
       string activeDocumentPath = GetActiveDocumentFilePath(ServiceProvider);
 
-      // show dialog
       ActivePathHolder theHolder = ActivePathHolder.getInstance();
       theHolder.activeFilePath = activeDocumentPath;
 
+      // show dialog
       var documentationControl = new InspectCodeWnd();
       documentationControl.ShowModal();
     }

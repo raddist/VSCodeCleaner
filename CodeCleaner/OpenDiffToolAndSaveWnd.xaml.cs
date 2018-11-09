@@ -47,10 +47,14 @@ namespace CodeCleanerSpace
     {
       ActivePathHolder theHolder = ActivePathHolder.getInstance();
       string activeDocumentPath = theHolder.activeFilePath;
+      string tmpDocumentPath = theHolder.tmpFilePath;
 
       string strCmdText;
-      strCmdText = "\"" + activeDocumentPath + "\" \"" + activeDocumentPath + "\" \"" + activeDocumentPath + "_tmp\"";// -o \"temp.cpp\"";
-      System.Diagnostics.Process.Start("C:\\Program Files\\KDiff3\\kdiff3.exe", strCmdText);
+      strCmdText = "\"" + activeDocumentPath + "\" \"" + activeDocumentPath + "\" \"" + tmpDocumentPath + "\"";// -o \"temp.cpp\"";
+
+      //string diffToolDirectory = CodeCleaner.Default.DiffToolDirectory; TODO_uncomment
+      string diffToolDirectory = "C:\\Program Files\\KDiff3\\kdiff3.exe";
+      System.Diagnostics.Process.Start(diffToolDirectory, strCmdText);
     }
 
     private void RemoveTmpFile()
@@ -70,16 +74,9 @@ namespace CodeCleanerSpace
       string activeDocumentPath = theHolder.activeFilePath;
       string tmpDocumentPath = theHolder.tmpFilePath;
 
-      string path = new FileInfo(activeDocumentPath).Directory.FullName;
-      string name = System.IO.Path.GetFileName(activeDocumentPath);
-
-      // Use Path class to manipulate file and directory paths.
-      string destFile = System.IO.Path.Combine(path, name);
-      string sourceFile = System.IO.Path.Combine(path, name + "_tmp");
-
       // To copy a file to another location and 
       // overwrite the destination file if it already exists.
-      System.IO.File.Copy(sourceFile, destFile, true);
+      System.IO.File.Copy(tmpDocumentPath, activeDocumentPath, true);
     }
   }
 }

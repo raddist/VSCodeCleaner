@@ -54,17 +54,11 @@ namespace CodeCleanerSpace
       // find document path
       ActivePathHolder theHolder = ActivePathHolder.getInstance();
       string activeDocumentPath = theHolder.activeFilePath;
-
-      string path = new FileInfo(activeDocumentPath).Directory.FullName;
-      string name = System.IO.Path.GetFileName(activeDocumentPath);
-
-      // Use Path class to manipulate file and directory paths.
-      string sourceFile = System.IO.Path.Combine(path, name);
-      string destFile = System.IO.Path.Combine(path, name + "_tmp");
+      string tmpDocumentPath = theHolder.tmpFilePath;
 
       // To copy a file to another location and 
       // overwrite the destination file if it already exists.
-      System.IO.File.Copy(sourceFile, destFile, true);
+      System.IO.File.Copy(activeDocumentPath, tmpDocumentPath, true);
 
 
       foreach ( var module in modulesToRun)
@@ -85,10 +79,11 @@ namespace CodeCleanerSpace
       // find document path
       ActivePathHolder theHolder = ActivePathHolder.getInstance();
       string activeDocumentPath = theHolder.activeFilePath;
+      string tmpDocumentPath = theHolder.tmpFilePath;
 
       string strCmdText = "-c \"import sys; sys.path.insert(0, r'" + folderPath + "');"
         + "import ScriptsMgr as smgr; "
-        + "smgr.fix_with_script(r'" + activeDocumentPath + "_tmp', '" + moduleName + "');\" ";
+        + "smgr.fix_with_script(r'" + tmpDocumentPath + "', '" + moduleName + "');\" ";
 
       var procStIfo = new ProcessStartInfo("py", strCmdText);
       procStIfo.RedirectStandardOutput = true;
@@ -117,30 +112,28 @@ namespace CodeCleanerSpace
     {
       var allBox = sender as CheckBox;
       string ownName = allBox.Name;
-      UIElementCollection elements = this.boxesStackPanel.Children;
-      
-      foreach (var element in elements)
-      {
-        CheckBox box = element as CheckBox;
-        if (!box.Name.Equals(ownName) )
-        {
-          box.IsChecked = true;
-        }
-      }
+
+      setCheckedForAllBoxes(true, ownName);
     }
 
     private void allBox_UnChecked(object sender, RoutedEventArgs e)
     {
       var allBox = sender as CheckBox;
       string ownName = allBox.Name;
+
+      setCheckedForAllBoxes(false, ownName);
+    }
+
+    private void setCheckedForAllBoxes(bool isChecked, string exceptName)
+    {
       UIElementCollection elements = this.boxesStackPanel.Children;
 
       foreach (var element in elements)
       {
         CheckBox box = element as CheckBox;
-        if (!box.Name.Equals(ownName))
+        if (!box.Name.Equals(exceptName))
         {
-          box.IsChecked = false;
+          box.IsChecked = isChecked;
         }
       }
     }

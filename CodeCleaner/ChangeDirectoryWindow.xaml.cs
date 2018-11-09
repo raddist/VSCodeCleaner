@@ -26,7 +26,8 @@ namespace CodeCleanerSpace
     {
       InitializeComponent();
 
-      this.PathTextBox.Text = CodeCleaner.Default.ScriptDirectory;
+      this.ScriptsPathTextBox.Text = CodeCleaner.Default.ScriptDirectory;
+      this.DifftoolPathTextBox.Text = CodeCleaner.Default.DiffToolDirectory;
     }
 
     private String directoryText;
@@ -46,11 +47,12 @@ namespace CodeCleanerSpace
 
     private void OnSave(object sender, RoutedEventArgs e)
     {
-      CodeCleaner.Default.ScriptDirectory = this.PathTextBox.Text;
+      CodeCleaner.Default.ScriptDirectory = this.ScriptsPathTextBox.Text;
+      CodeCleaner.Default.DiffToolDirectory = this.DifftoolPathTextBox.Text;
       this.Close();
     }
 
-    private void OnBrowse(object sender, RoutedEventArgs e)
+    private void OnBrowseScripts(object sender, RoutedEventArgs e)
     {
       // find script path
       string folderPath = "";
@@ -60,7 +62,20 @@ namespace CodeCleanerSpace
         folderPath = folderBrowserDialog1.SelectedPath;
       }
 
-      this.PathTextBox.Text = folderPath;
+      this.ScriptsPathTextBox.Text = folderPath;
+    }
+
+    private void OnBrowseDifftool(object sender, RoutedEventArgs e)
+    {
+      // find difftool path
+      string folderPath = "";
+      FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+      if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+      {
+        folderPath = folderBrowserDialog1.SelectedPath;
+      }
+
+      this.DifftoolPathTextBox.Text = folderPath;
     }
   }
 }
